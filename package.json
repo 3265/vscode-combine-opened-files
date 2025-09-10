@@ -1,0 +1,54 @@
+{
+  "name": "vscode-combine-opened-files",
+  "displayName": "Combine Opened Files",
+  "description": "Combine open files content to clipboard or generate a text file.",
+  "version": "0.0.1",
+  "publisher": "3265",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:combine-opened-files.start"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "combine-opened-files.start",
+        "title": "Combine Opened Files"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "combine-opened-files-container",
+          "title": "Combine Opened Files",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "combine-opened-files-container": [
+        {
+          "id": "combine-opened-files-view",
+          "name": "Opened Files",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "@types/vscode": "1.103.0",
+    "typescript": "5.9.2"
+  }
+}

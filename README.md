@@ -1,2 +1,2 @@
-# vscode-copy-opened-files
-vscode-copy-opened-files
+# vscode-combine-opened-files
+vscode-combine-opened-files
