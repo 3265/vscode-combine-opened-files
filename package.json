@@ -1,19 +1,32 @@
 {
   "name": "vscode-combine-opened-files",
   "displayName": "Combine Opened Files",
-  "description": "Combine open files content to clipboard or generate a text file.",
-  "version": "0.0.1",
+  "description": "Combine the content of opened files into a single new file.",
+  "version": "1.0.1",
   "publisher": "3265",
-  "engines": {
-    "vscode": "^1.80.0"
+  "license": "MIT",
+  "icon": "resources/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3265/vscode-combine-opened-files.git"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:combine-opened-files.start"
+  "keywords": [
+    "combine",
+    "merge",
+    "concatenate",
+    "file",
+    "copy"
   ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:combine-opened-files-view"
+  ],
   "contributes": {
     "commands": [
       {
