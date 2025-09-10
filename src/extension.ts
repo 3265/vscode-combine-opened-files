@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-// 拡張機能が有効化されたときに実行されるメイン関数
+// Main function executed when the extension is activated
 export function activate(context: vscode.ExtensionContext) {
-  // サイドバーに表示するビューの提供者（Provider）を作成し、VS Codeに登録します。
-  // "combine-opened-files-view" というIDは、package.jsonで定義したものと一致させる必要があります。
+  // Create and register the provider for the view shown in the sidebar.
+  // The ID "combine-opened-files-view" must match the one defined in package.json.
   const provider = new CombineFilesViewProvider(context.extensionUri);
 
   context.subscriptions.push(
@@ -18,7 +18,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
-  // このメソッドが、ビューが表示されるたびにVS Codeから呼び出されます。
+  // Called by VS Code each time the view is revealed.
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
     context: vscode.WebviewViewResolveContext,
@@ -26,34 +26,34 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
   ) {
     this._view = webviewView;
 
-    // Webviewでスクリプトを有効にし、ローカルリソースへのアクセスを許可します。
+    // Enable scripts in the Webview and allow access to local resources.
     webviewView.webview.options = {
       enableScripts: true,
       localResourceRoots: [this._extensionUri]
     };
 
-    // Webviewに表示するHTMLコンテンツを設定します。
+    // Set the HTML content that the Webview will display.
     webviewView.webview.html = this._getWebviewContent(webviewView.webview);
 
-    // Webview内のUI（JavaScript）からのメッセージを受け取るためのリスナーを設定します。
+    // Set up a listener to receive messages from the Webview UI (JavaScript).
     webviewView.webview.onDidReceiveMessage(async message => {
       switch (message.command) {
-        // UIから「ファイルリストをください」と要求された場合の処理
+        // When the UI requests the list of files
         case 'getFiles': {
           const files = await getOpenedFiles();
-          // 取得したファイルリストをUIに送り返します。
+          // Send the retrieved file list back to the UI.
           webviewView.webview.postMessage({ command: 'updateFiles', files: files });
           return;
         }
-        // UIから「この内容でファイルを生成してください」と要求された場合の処理
+        // When the UI asks to generate a file from the provided combined text
         case 'generateFile': {
-          // 新しい無題のドキュメントを作成
+          // Create a new untitled document
           const newDocument = await vscode.workspace.openTextDocument({
-            content: message.text, // UIから送られてきた結合済みのテキスト
-            language: 'text'     // ファイルタイプをプレーンテキストに設定
+            content: message.text, // Combined text sent from the UI
+            language: 'text'       // Set the file type to plain text
           });
 
-          // 作成したドキュメントをエディタで表示
+          // Show the created document in the editor
           await vscode.window.showTextDocument(newDocument);
 
           return;
@@ -62,11 +62,10 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
     });
   }
 
-// CombineFilesViewProvider クラス内のメソッド
-
+  // Method inside CombineFilesViewProvider class
   private _getWebviewContent(webview: vscode.Webview): string {
     return `<!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,11 +119,11 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
     .link-button {
       background: none;
       border: none;
-      color: var(--vscode-textLink-foreground); /* 基本の色を指定 */
+      color: var(--vscode-textLink-foreground); /* Set the base color */
       cursor: pointer;
       padding: 0;
       font-size: 0.9em;
-      text-decoration: none; /* 通常は下線なし */
+      text-decoration: none; /* No underline by default */
     }
   </style>
 </head>
@@ -142,7 +141,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
   <button id="combine-button" style="display: none;">Combine & Generate File</button>
 
   <script>
-    // JavaScript部分は変更ありません
+    // The JavaScript section is unchanged
     const vscode = acquireVsCodeApi();
     const fileListDiv = document.getElementById('file-list');
     const combineButton = document.getElementById('combine-button');
@@ -235,7 +234,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
   }
 }
 
-// 現在開かれているテキストファイルの情報を取得する非同期関数
+// Async function to retrieve information about currently opened text files
 async function getOpenedFiles(): Promise<{ name: string; path: string; content: string }[]> {
   const tabs = vscode.window.tabGroups.all.flatMap(group => group.tabs);
   const filePromises = tabs.map(async tab => {
@@ -245,7 +244,7 @@ async function getOpenedFiles(): Promise<{ name: string; path: string; content: 
         const document = await vscode.workspace.openTextDocument(uri);
         return {
           name: path.basename(uri.fsPath),
-          // vscode.workspace.asRelativePath でワークスペースからの相対パスを取得
+          // Get the relative path from the workspace
           path: vscode.workspace.asRelativePath(uri.fsPath),
           content: document.getText()
         };
@@ -258,9 +257,9 @@ async function getOpenedFiles(): Promise<{ name: string; path: string; content: 
   });
 
   const files = await Promise.all(filePromises);
-  // 読み込めなかったファイル（null）を除外して返す
+  // Filter out files that couldn't be read (null)
   return files.filter((f): f is { name: string; path: string; content: string } => f !== null);
 }
 
-// 拡張機能が無効化されるときに呼ばれる関数（今回は何もしない）
+// Called when the extension is deactivated (no-op for now)
 export function deactivate() {}
