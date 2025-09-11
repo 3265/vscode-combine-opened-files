@@ -2,7 +2,7 @@
   "name": "vscode-combine-selected-open-files",
   "displayName": "Combine Selected Open Files",
   "description": "Combine the content of open files into a single new file.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "3265",
   "license": "MIT",
   "icon": "resources/logo.png",

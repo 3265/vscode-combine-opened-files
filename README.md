@@ -2,7 +2,7 @@
 
 This extension consolidates the contents of multiple selected files into one, allowing you to easily copy and paste the project context into prompts for AI.
 
-![SideViewer](resources/screenshot.png)
+![SideViewer](resources/ss.png)
 
 install from the command line:
 
