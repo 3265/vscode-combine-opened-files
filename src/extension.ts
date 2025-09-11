@@ -4,11 +4,11 @@ import * as path from 'path';
 // Main function executed when the extension is activated
 export function activate(context: vscode.ExtensionContext) {
   // Create and register the provider for the view shown in the sidebar.
-  // The ID "combine-opened-files-view" must match the one defined in package.json.
+  // The ID "combine-selected-open-files-view" must match the one defined in package.json.
   const provider = new CombineFilesViewProvider(context.extensionUri);
 
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider("combine-opened-files-view", provider)
+    vscode.window.registerWebviewViewProvider("combine-selected-open-files-view", provider)
   );
 }
 
@@ -40,7 +40,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
       switch (message.command) {
         // When the UI requests the list of files
         case 'getFiles': {
-          const files = await getOpenedFiles();
+          const files = await getOpenFiles();
           // Send the retrieved file list back to the UI.
           webviewView.webview.postMessage({ command: 'updateFiles', files: files });
           return;
@@ -69,7 +69,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Combine Opened Files</title>
+  <title>Combine Selected Open Files</title>
   <style>
     body {
       font-family: var(--vscode-font-family);
@@ -128,7 +128,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
   </style>
 </head>
 <body>
-  <h1>Combine Opened Files</h1>
+  <h1>Combine Selected Open Files</h1>
 
   <div class="selection-controls">
     <button id="select-all-button" class="link-button">Select All</button>
@@ -235,7 +235,7 @@ class CombineFilesViewProvider implements vscode.WebviewViewProvider {
 }
 
 // Async function to retrieve information about currently opened text files
-async function getOpenedFiles(): Promise<{ name: string; path: string; content: string }[]> {
+async function getOpenFiles(): Promise<{ name: string; path: string; content: string }[]> {
   const tabs = vscode.window.tabGroups.all.flatMap(group => group.tabs);
   const filePromises = tabs.map(async tab => {
     if (tab.input instanceof vscode.TabInputText) {

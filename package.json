@@ -1,14 +1,14 @@
 {
-  "name": "vscode-combine-opened-files",
-  "displayName": "Combine Opened Files",
-  "description": "Combine the content of opened files into a single new file.",
-  "version": "1.0.1",
+  "name": "vscode-combine-selected-open-files",
+  "displayName": "Combine Selected Open Files",
+  "description": "Combine the content of open files into a single new file.",
+  "version": "1.0.2",
   "publisher": "3265",
   "license": "MIT",
   "icon": "resources/logo.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/3265/vscode-combine-opened-files.git"
+    "url": "https://github.com/3265/vscode-combine-selected-open-files.git"
   },
   "categories": [
     "Other"
@@ -25,29 +25,29 @@
   },
   "main": "./out/extension.js",
   "activationEvents": [
-    "onView:combine-opened-files-view"
+    "onView:combine-selected-open-files-view"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "combine-opened-files.start",
-        "title": "Combine Opened Files"
+        "command": "combine-selected-open-files.start",
+        "title": "Combine Selected Open Files"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "combine-opened-files-container",
-          "title": "Combine Opened Files",
+          "id": "combine-selected-open-files-container",
+          "title": "Combine Selected Open Files",
           "icon": "resources/icon.svg"
         }
       ]
     },
     "views": {
-      "combine-opened-files-container": [
+      "combine-selected-open-files-container": [
         {
-          "id": "combine-opened-files-view",
-          "name": "Opened Files",
+          "id": "combine-selected-open-files-view",
+          "name": "Open Files",
           "type": "webview"
         }
       ]

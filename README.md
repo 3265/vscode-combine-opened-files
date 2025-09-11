@@ -1,13 +1,13 @@
-# vscode-combine-opened-files
+# vscode-combine-selected-open-files
 
-This extension consolidates the contents of multiple files into one, allowing you to easily copy and paste the project context into prompts for AI.
+This extension consolidates the contents of multiple selected files into one, allowing you to easily copy and paste the project context into prompts for AI.
 
 ![SideViewer](resources/screenshot.png)
 
 install from the command line:
 
 ```bash
-code --install-extension 3265.vscode-combine-opened-files
+code --install-extension 3265.vscode-combine-selected-open-files
 ```
 
 ## License
